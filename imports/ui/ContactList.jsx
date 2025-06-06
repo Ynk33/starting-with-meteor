@@ -10,14 +10,18 @@ export const ContactList = () => {
 
     return (
         <>
-            <div>
-                <h3>Contact List</h3>
-                <ul>
+            <div className="mt-16">
+                <h3 className="text-xs uppercase tracking-wide font-semibold text-gray-500">Contact List</h3>
+                <ul role="list" className="divide-y divide-gray-100 py-4">
                     {contacts.map((contact) => (
-                        <li key={contact._id}>
-                            <span>{contact.name}</span>&nbsp;-&nbsp;
-                            <span>{contact.email}</span>&nbsp;-&nbsp;
-                            <span>{contact.imageURL}</span>
+                        <li key={contact._id} className="flex border-y border-gray-200 justify-between gap-x-6 py-2">
+                            <div className="flex min-w-0 gap-x-4">
+                                <img alt="" src={contact.imageURL} className="size-12 flex-none rounded-full bg-gray-50" />
+                                <div className="min-w-0 flex-auto">
+                                    <p className="text-sm/6 font-semibold text-gray-900">{contact.name}</p>
+                                    <p className="mt-1 truncate text-xs/5 text-gray-500">{contact.email}</p>
+                                </div>
+                            </div>
                         </li>
                     ))}
                 </ul>
