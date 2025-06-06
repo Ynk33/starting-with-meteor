@@ -22,6 +22,13 @@ export const ContactList = () => {
                                     <p className="mt-1 truncate text-xs/5 text-gray-500">{contact.email}</p>
                                 </div>
                             </div>
+                            <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                                { contact.createdAt && (
+                                    <p className="text-xs/5 text-gray-500">
+                                        Created on <time dateTime={contact.createdAt}>{contact.createdAt.toDateString()}</time> at <time dateTime={contact.createdAt}>{contact.createdAt.toLocaleTimeString()}</time>
+                                    </p>
+                                )}
+                            </div>
                         </li>
                     ))}
                 </ul>

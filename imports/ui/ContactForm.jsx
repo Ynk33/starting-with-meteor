@@ -1,7 +1,5 @@
 import React from 'react';
-import { ContactsCollection } from '../api/ContactsCollection';
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
-import { ChevronDownIcon } from '@heroicons/react/16/solid'
+import { Meteor } from 'meteor/meteor';
 
 export const ContactForm = () => {
   const [name, setName] = React.useState('');
@@ -10,14 +8,22 @@ export const ContactForm = () => {
 
   const saveContact = () => {
     // Save the contact to the collection
-    ContactsCollection.insert({
+    Meteor.call('contact.insert', {
       name,
       email,
-      imageURL
+      imageURL,
+    }, (errorResponse) => {
+      if (errorResponse) {
+        // Handle the error if the save operation fails
+        console.error('Error saving contact:', errorResponse);
+        alert('Failed to save contact: ' + errorResponse.reason);
+      } else {
+        // Successfully saved the contact
+        console.log('Contact saved successfully');
+        // Clean up the form fields after saving
+        cancelForm();
+      }
     });
-
-    // Clean up the form fields after saving
-    this.cancelForm();
   }
 
   const cancelForm = () => {
