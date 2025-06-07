@@ -1,9 +1,9 @@
 import React, { memo } from "react";
 
-export const ContactItem = memo(({ contact, onRemove }) => {
-  const handleRemove = () => {
-    if (onRemove) {
-      onRemove(contact._id);
+export const ContactItem = memo(({ contact, onArchive }) => {
+  const handleArchive = () => {
+    if (onArchive) {
+      onArchive(contact._id);
     }
   };
 
@@ -28,10 +28,10 @@ export const ContactItem = memo(({ contact, onRemove }) => {
         <div>
             <button
                 type='button'
-                onClick={() => handleRemove(contact._id)}
+                onClick={() => handleArchive(contact._id)}
                 className="inline-flex items-center cursor-pointer shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"
             >
-                Remove
+                Archive
             </button>
         </div>
     </li>

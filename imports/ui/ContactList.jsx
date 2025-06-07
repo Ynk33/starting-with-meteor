@@ -10,15 +10,15 @@ export const ContactList = () => {
     const [error, setError] = React.useState(null);
     const [success, setSuccess] = React.useState("");
 
-    const isLoading = useSubscribe('allContacts');
-    const contacts = useFind(() => ContactsCollection.find({}, { sort: { createdAt: -1 } }));
+    const isLoading = useSubscribe('activeContacts');
+    const contacts = useFind(() => ContactsCollection.find({ archived: { $ne: true } }, { sort: { createdAt: -1 } }));
 
-    const removeContact = (contactId) => {
-        Meteor.call('contacts.remove', contactId, (error) => {
+    const archiveContact = (contactId) => {
+        Meteor.call('contacts.archive', contactId, (error) => {
             if (error) {
                 showError(error);
             } else {
-                showSuccess("Contact removed successfully!");
+                showSuccess("Contact archived successfully!");
             }
         });
     }
@@ -67,7 +67,7 @@ export const ContactList = () => {
                 
                 <ul role="list" className="divide-y divide-gray-100 py-4">
                     {contacts.map((contact) => (
-                        <ContactItem contact={contact} onRemove={removeContact} key={contact._id} />
+                        <ContactItem contact={contact} onArchive={archiveContact} key={contact._id} />
                     ))}
                 </ul>
             </div>

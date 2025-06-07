@@ -32,6 +32,7 @@ Meteor.methods({
     // Insert the contact into the ContactsCollection
     ContactsCollection.insertAsync({
       ...contact,
+      archived: false, // Default to not archived
       createdAt: new Date(), // Add a timestamp for when the contact was created
     });
   },
@@ -42,5 +43,15 @@ Meteor.methods({
 
     // Remove the contact from the ContactsCollection
     ContactsCollection.removeAsync(contactId);
+  },
+
+  'contacts.archive'(contactId) {
+    // Type check to ensure contactId is a string
+    check(contactId, String);
+
+    // Archive the contact by setting an 'archived' field to true
+    ContactsCollection.updateAsync(contactId, {
+      $set: { archived: true },
+    });
   },
 });
