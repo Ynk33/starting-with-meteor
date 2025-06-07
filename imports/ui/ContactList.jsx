@@ -29,6 +29,10 @@ export const ContactList = () => {
         console.error(error);
         setSuccess(""); // Clear success message if there is an error
         setError(error);
+
+        setTimeout(() => {
+            setError(null);
+        }, 3000); // Clear the success message after 3 seconds
     }
 
     // Show a success message
@@ -37,8 +41,8 @@ export const ContactList = () => {
         setError(null); // Clear any existing error message
 
         setTimeout(() => {
-        setSuccess("");
-        }, 5000); // Clear the success message after 3 seconds
+            setSuccess("");
+        }, 3000); // Clear the success message after 3 seconds
     }
 
     return (
