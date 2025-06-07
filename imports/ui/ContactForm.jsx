@@ -1,10 +1,14 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import { ErrorAlert } from './components/ErrorAlert.jsx';
+import { SuccessAlert } from './components/SuccessAlert.jsx';
 
 export const ContactForm = () => {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [imageURL, setImageURL] = React.useState('');
+  const [error, setError] = React.useState(null);
+  const [success, setSuccess] = React.useState("");
 
   const saveContact = () => {
     // Save the contact to the collection
@@ -15,22 +19,36 @@ export const ContactForm = () => {
     }, (errorResponse) => {
       if (errorResponse) {
         // Handle the error if the save operation fails
-        console.error('Error saving contact:', errorResponse);
-        alert('Failed to save contact: ' + errorResponse.reason);
+        showError(errorResponse);
       } else {
         // Successfully saved the contact
-        console.log('Contact saved successfully');
-        // Clean up the form fields after saving
-        cancelForm();
+        showSuccess("Contact saved successfully!");
       }
     });
   }
 
-  const cancelForm = () => {
-    // Reset the form fields
+  // Show an error message
+  const showError = (error) => {
+    setSuccess(""); // Clear success message if there is an error
+    setError(error);
+  }
+
+  // Show a success message
+  const showSuccess = (message) => {
+    setSuccess(message);
+    clearForm(); // Reset the form fields after showing success
+
+    setTimeout(() => {
+      setSuccess("");
+    }, 5000); // Clear the success message after 3 seconds
+  }
+
+  // Reset the form fields
+  const clearForm = () => {
     setName('');
     setEmail('');
     setImageURL('');
+    setError(null);
   }
 
   return (
@@ -40,6 +58,14 @@ export const ContactForm = () => {
           <div>
             <h2 className="text-2xl font-semibold text-gray-900">Contact Form</h2>
             <p className="mt-1 text-sm/6 text-gray-600">Use this form to save a new contact in your contact list.</p>
+
+            {error && (
+              <ErrorAlert error={error} onClose={() => setError(null)} />
+            )}
+
+            {success && (
+              <SuccessAlert message={success} onClose={() => setSuccess("")} />
+            )}
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-2 sm:col-start-1">
@@ -99,7 +125,7 @@ export const ContactForm = () => {
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
             type="button"
-            onClick={cancelForm}
+            onClick={clearForm}
             className="text-sm/6 font-semibold text-gray-900"
           >
             Cancel

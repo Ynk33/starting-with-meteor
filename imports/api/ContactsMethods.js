@@ -6,7 +6,19 @@ Meteor.methods({
   'contact.insert'(contact) {
     // Validate the contact data
     if (contact.name === '' || contact.email === '' || contact.imageURL === '') {
-      throw new Meteor.Error('invalid-arguments', 'Contact data cannot be empty');
+        let errors = [];
+        
+        if (contact.name === '') {
+            errors.push('Name cannot be empty');
+        }
+        if (contact.email === '') {
+            errors.push('Email cannot be empty');
+        }
+        if (contact.imageURL === '') {
+            errors.push('Image URL cannot be empty');
+        }
+
+        throw new Meteor.Error('Contact validation failed', 'Contact data is invalid', { errors });
     }
 
     // Insert the contact into the ContactsCollection

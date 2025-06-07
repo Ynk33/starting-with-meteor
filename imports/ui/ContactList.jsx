@@ -5,7 +5,7 @@ import { useTracker } from 'meteor/react-meteor-data';
 export const ContactList = () => {
     const contacts = useTracker(() => {
         // This will automatically re-run when the ContactsCollection changes
-        return ContactsCollection.find({}).fetch();
+        return ContactsCollection.find({}, { sort: { createdAt: -1 } }).fetch();
     });
 
     return (
