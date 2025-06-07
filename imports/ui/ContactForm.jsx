@@ -12,7 +12,7 @@ export const ContactForm = () => {
 
   const saveContact = () => {
     // Save the contact to the collection
-    Meteor.call('contact.insert', {
+    Meteor.call('contacts.insert', {
       name,
       email,
       imageURL,

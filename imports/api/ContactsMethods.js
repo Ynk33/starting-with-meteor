@@ -3,9 +3,17 @@ import { ContactsCollection } from './ContactsCollection';
 import { check } from 'meteor/check';
 
 Meteor.methods({
-  'contact.insert'(contact) {
+  'contacts.insert'(contact) {
     // Validate the contact data
     if (contact.name === '' || contact.email === '' || contact.imageURL === '') {
+        // Type check to ensure contact is an object
+        check(contact, {
+            name: String,
+            email: String,
+            imageURL: String,
+        });
+
+        // If any field is empty, throw an error with a detailed message
         let errors = [];
         
         if (contact.name === '') {
@@ -26,5 +34,13 @@ Meteor.methods({
       ...contact,
       createdAt: new Date(), // Add a timestamp for when the contact was created
     });
-  }
+  },
+
+  'contacts.remove'(contactId) {
+    // Type check to ensure contactId is a string
+    check(contactId, String);
+
+    // Remove the contact from the ContactsCollection
+    ContactsCollection.removeAsync(contactId);
+  },
 });
